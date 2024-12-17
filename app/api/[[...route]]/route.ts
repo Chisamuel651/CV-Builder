@@ -1,57 +1,33 @@
 import { Hono } from 'hono'
 import { handle } from 'hono/vercel'
-import { z } from 'zod'
-import { zValidator } from '@hono/zod-validator'
-import { getAuthUser } from '@/lib/kinde'
+import { logger } from 'hono/logger'
+import authors from './authors'
+import books from './books'
+import { HTTPException } from 'hono/http-exception'
 
 export const runtime = 'edge'
 
 const app = new Hono().basePath('/api')
 
-app
-    .get('/hello', getAuthUser, (c) => {
-        return c.json({
-            message: 'Hello Next.js!',
-        })
+app.use("*", logger())
+
+app.onError((err, c) => {
+    if(err instanceof HTTPException){
+        return err.getResponse()
+    }
+
+    return c.json({ error: "internal error" });
+})
+
+const routes = app.route('/authors', authors).route('/books', books)
+
+app.get('/', (c) => {
+    return c.json({
+        message: "Hello from CvBuilder Ai!",
     })
-    .get('/hello/:id',
-        zValidator(
-            'param',
-            z.object({
-              id: z.string(),
-            })
-        ),
-        async (c) => {
-        const {id} = c.req.valid('param')
-        return c.json({
-            message: 'hello subscribers',
-            id: id,
-        })
-    })
-    .post('/create/:postId',
-        zValidator(
-            'json',
-            z.object({
-              title: z.string(),
-              summary: z.string(),
-            })
-        ),
-        zValidator(
-            'param',
-            z.object({
-              postId: z.string(),
-            })
-        ),
-        async (c) => {
-            const { title, summary } = c.req.valid('json')
-            const { postId } = c.req.valid('param')
-            return c.json({
-                title,
-                summary,
-                postId
-            })
-        }
-    )
+})
+
+export type AppType = typeof routes
 
 export const GET = handle(app)
 export const POST = handle(app)
