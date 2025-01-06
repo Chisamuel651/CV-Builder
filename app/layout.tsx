@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import {Urbanist} from "next/font/google";
+import { Urbanist } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/context/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
+import QueryProvider from "@/context/query-provider";
 
 const urbanist = Urbanist({ subsets: ['latin'] });
 
@@ -22,7 +23,8 @@ export default function RootLayout({
       <body
         className={cn("bg-background", urbanist.className)}
       >
-        <ThemeProvider
+        <QueryProvider>
+          <ThemeProvider
             attribute="class"
             defaultTheme="system"
             enableSystem
@@ -31,6 +33,7 @@ export default function RootLayout({
             {children}
             <Toaster />
           </ThemeProvider>
+        </QueryProvider>
       </body>
     </html>
   );

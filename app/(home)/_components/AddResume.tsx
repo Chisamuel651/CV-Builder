@@ -1,11 +1,22 @@
 'use client'
+import useCreateDocument from '@/features/document/use-create-document';
 import { FileText, Loader, Plus } from 'lucide-react'
+import { useRouter } from 'next/navigation';
 import React, { useCallback } from 'react'
 
 const AddResume = () => {
-
-  const isPending = false;
-  const onCreate = useCallback(() => {}, [])
+  const router = useRouter();
+  const { isPending, mutate } = useCreateDocument();
+  const onCreate = useCallback(() => {
+    mutate({
+      title: "Unititled Resume",
+    }, {
+      onSuccess: (response) => {
+        const documentId = response.data.documentId;
+        router.push(`/dashboard/document/${documentId}/edit`)
+      }
+    })
+  }, [ mutate, router ])
   return (
     <>
       <div role='button' className='p-[2px] w-full cursor-pointer max-w-[164px]' onClick={onCreate}>
