@@ -5,6 +5,7 @@ import { zValidator } from '@hono/zod-validator'
 import { getAuthUser } from '@/lib/kinde'
 import { generateDocUUID } from '@/lib/helper'
 import { db } from '@/db'
+import { desc, and, eq, ne } from 'drizzle-orm';
 
 const documentRoute = new Hono()
   .post('/create',
@@ -49,5 +50,27 @@ const documentRoute = new Hono()
       }
     }
   )
+  .get("all", getAuthUser, async (c) => {
+    try {
+      const user = c.get("user");
+      const userId = user.id;
+      const documents = await db.select().from(documentTable).orderBy(desc(documentTable.updatedAt)).where(
+        and(
+          eq(documentTable.userId, userId),
+          ne(documentTable.status, "archived"),
+        )
+      );
+      return c.json({
+        success: true,
+        data: documents
+      });
+    } catch (error) {
+      return c.json({
+        success: false,
+        message: "Failed to fetch documents",
+        error: error,
+      }, 500)
+    }
+  })
 
 export default documentRoute
