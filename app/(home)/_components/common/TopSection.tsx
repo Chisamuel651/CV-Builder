@@ -6,6 +6,7 @@ import ResumeTitle from './ResumeTitle';
 
 const TopSection = () => {
     const { resumeInfo } = useResumeContext();
+
   return (
     <>
         {resumeInfo?.status === "archived" && (
@@ -16,7 +17,12 @@ const TopSection = () => {
         )}
         <div className='w-full flex items-center justify-between border-b pb-3'>
             <div className="flex items-center gap-2">
-                <ResumeTitle />
+                <ResumeTitle
+                    isLoading={false}
+                    initialTitle={resumeInfo?.title || ""}
+                    status={resumeInfo?.status}
+                    onSave={(value) => console.log(value)}
+                />
             </div>
         </div>
     </>
