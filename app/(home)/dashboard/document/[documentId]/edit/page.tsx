@@ -1,10 +1,12 @@
 import React from 'react'
+import { ResumeInfoProvider } from '@/context/resume-info-provider'
+import EditResume from '../../../../_components/EditResume'
 
 const Page = () => {
   return (
-    <div>
-      edit resume page
-    </div>
+    <ResumeInfoProvider>
+      <EditResume />
+    </ResumeInfoProvider>
   )
 }
 

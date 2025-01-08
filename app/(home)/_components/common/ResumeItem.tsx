@@ -1,5 +1,5 @@
 import { format } from 'date-fns'
-import { FileText } from 'lucide-react';
+import { Dot, EllipsisVertical, FileText, Globe, Lock } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import React, { FC, useCallback, useMemo } from 'react';
@@ -26,7 +26,7 @@ const ResumeItem: FC<PropType> = ({
 
     const docDate = useMemo(() => {
         if(!updatedAt) return null
-        const formattedDate = format(updatedAt, "MM dd,yyyy");
+        const formattedDate = format(updatedAt, "MMM dd,yyyy");
         return formattedDate
     }, [updatedAt]);
 
@@ -36,7 +36,8 @@ const ResumeItem: FC<PropType> = ({
   return (
     <div className='cursor-pointer max-w-[164px] w-full border rounded-lg transition-all h-[197px] hover:border-primary hover:shadow-md shadow-primary' 
         role='button'
-        style={{ border: themeColor || "" }}
+        style={{ borderColor: themeColor || "" }}
+        onClick={gotoDoc}
     >
       <div className='flex flex-col w-full h-full items-center rounded-lg justify-center bg-[#fdfdfd] dark:bg-secondary'>
         <div className="w-full flex flex-1 px-1 pt-2">
@@ -55,8 +56,35 @@ const ResumeItem: FC<PropType> = ({
                 )}
             </div>
         </div>
+
         {/* body content */}
-        
+        <div className='shrink w-full border-t pt-2 pb-[9px] px-[9px]'>
+            <div className='flex items-center justify-between'>
+                <h5 className='font-semibold text-sm mb-[2px] truncate block w-[200px]'>{title}</h5>
+                <button className='text-muted-foreground'>
+                    <EllipsisVertical size="20px" />
+                </button>
+            </div>
+
+            <div className="flex items-center !text-[12px] font-medium text-muted-foreground">
+                <span className='flex items-center gap-[2px]'>
+                    {status === "private" ? (
+                        <>
+                            <Lock size="12px" />
+                            private
+                        </>
+                    ): (
+                        <>
+                            <Globe size='12px' className='text-primary' />
+                        </>
+                    )}
+                </span>
+                <Dot size="15px" />
+                <span>
+                    {docDate}
+                </span>
+            </div>
+        </div>
       </div>
     </div>
   )

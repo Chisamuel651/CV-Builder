@@ -15,7 +15,7 @@ export const documentTable = pgTable('document', {
     userId: varchar('user_id').notNull(),
     title: varchar('title', { length: 255 }).notNull(),
     summary: text('summary'),
-    themeColor: varchar('theme_color', { length: 255 }).notNull().default('#7c3aed'),
+    themeColor: varchar('theme_color', { length: 255 }).notNull().default('#ea530f'),
     thumbnail: text('thumbnail'),
     currentPosition: integer('current_position').notNull().default(1),
     status: statusEnum('status').notNull().default('private'),
