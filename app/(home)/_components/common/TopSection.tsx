@@ -24,6 +24,18 @@ const TopSection = () => {
                     onSave={(value) => console.log(value)}
                 />
             </div>
+
+            <div className="flex items-center gap-2">
+                {/* Theme Color */}
+
+                {/* preview mode */}
+
+                {/* download resume */}
+
+                {/* share resume */}
+
+                {/* more option */}
+            </div>
         </div>
     </>
   );
