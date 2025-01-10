@@ -13,7 +13,7 @@ const EducationPreview: FC<PropsType> = ({
   isLoading
 }) => {
   const themeColor = resumeInfo?.themeColor || INITIAL_THEME_COLOR;
-  if (isLoading) {
+  if(isLoading) {
     return <SkeletonLoader />
   }
   return (

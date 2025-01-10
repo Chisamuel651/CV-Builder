@@ -5,7 +5,7 @@ const SkeletonLoader = () => {
   return (
     <div className='flex flex-col gap-2 pt-3'>
       <Skeleton className='h-6 w-1/2 mx-auto mb-2' />
-      {{ ...Array(3)?.map((_, index) => (
+      { ...Array(3)?.map((_, index) => (
         <div className='p-2' key={index}>
             <Skeleton className='h-5 w-1/3 mb-1' />
             <div className="flex items-start justify-between">
@@ -14,7 +14,7 @@ const SkeletonLoader = () => {
             </div>
             <Skeleton className='h-3 w-full mt-1' />
         </div>
-      )) }}
+      )) }
     </div>
   )
 }
