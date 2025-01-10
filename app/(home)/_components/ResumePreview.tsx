@@ -5,6 +5,7 @@ import React from 'react'
 import PersonalInfo from './preview/PersonalInfo';
 import SummaryPreview from './preview/SummaryPreview';
 import ExperiencePreview from './preview/ExperiencePreview';
+import EducationPreview from './preview/EducationPreview';
 
 const ResumePreview = () => {
   const { resumeInfo } = useResumeContext();
@@ -26,7 +27,7 @@ const ResumePreview = () => {
       {/* professional experience */}
       <ExperiencePreview isLoading={isLoading} resumeInfo={resumeInfo} />
       {/* education */}
-
+      <EducationPreview isLoading={isLoading} resumeInfo={resumeInfo} />
       {/* skills */}
     </div>
   )
