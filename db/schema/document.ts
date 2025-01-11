@@ -1,9 +1,9 @@
 import { relations } from "drizzle-orm";
 import { integer, pgEnum, pgTable, serial, text, timestamp, varchar } from "drizzle-orm/pg-core";
-import { personalInfoTable } from "./personal-info";
-import { experienceTable } from "./experience";
-import { educationTable } from "./education";
-import { skillsTable } from "./skills";
+import { personalInfoTable, personalInfoTableSchema } from "./personal-info";
+import { experienceTable, experienceTableSchema } from "./experience";
+import { educationTable, educationTableSchema } from "./education";
+import { skillsTable, skillsTableSchema } from "./skills";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -48,4 +48,20 @@ export const createDocumentTableSchema = createInsertSchema(documentTable, {
     currentPosition: true,
   });
 
+  export const updateCombinedSchema = z.object({
+    title: createDocumentTableSchema.shape.title.optional(),
+    status: createDocumentTableSchema.shape.status.optional(),
+    summary: createDocumentTableSchema.shape.summary.optional(),
+    themeColor: createDocumentTableSchema.shape.themeColor.optional(),
+    thumbnail: createDocumentTableSchema.shape.thumbnail.optional(),
+    currentPosition: createDocumentTableSchema.shape.currentPosition.optional(),
+    personalInfo: personalInfoTableSchema.optional(),
+    education: z.array(educationTableSchema).optional(),
+    experience: z.array(experienceTableSchema).optional(),
+    skills: z.array(skillsTableSchema).optional(),
+
+  })
+
   export type DocumentSchema = z.infer<typeof createDocumentTableSchema>;
+
+  export type UpdateDocumentSchema = z.infer<typeof updateCombinedSchema>

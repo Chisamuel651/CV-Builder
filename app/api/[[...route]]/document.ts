@@ -1,5 +1,5 @@
 // authors.ts
-import { createDocumentTableSchema, DocumentSchema, documentTable } from '@/db/schema/document'
+import { createDocumentTableSchema, DocumentSchema, documentTable, updateCombinedSchema, UpdateDocumentSchema } from '@/db/schema/document'
 import { Hono } from 'hono'
 import { zValidator } from '@hono/zod-validator'
 import { desc, and, eq, ne } from 'drizzle-orm';
@@ -7,6 +7,7 @@ import { z } from 'zod'
 import { getAuthUser } from '@/lib/kinde'
 import { generateDocUUID } from '@/lib/helper'
 import { db } from '@/db'
+import { personalInfoTable } from '@/db/schema';
 
 const documentRoute = new Hono()
   .post('/create',
@@ -108,6 +109,82 @@ const documentRoute = new Hono()
           message: 'Failed to fetch documents',
           error: error,
         }, 500);
+      }
+    }
+  )
+  .patch(
+    '/update:documentId',
+    zValidator(
+      'param',
+      z.object({
+        documentId: z.string()
+      })
+    ),
+    zValidator(
+      'json',
+      updateCombinedSchema
+    ),
+    getAuthUser,
+    async (c) => {
+      try {
+        const user = c.get('user')
+        const { documentId } = c.req.valid('param');
+
+        const {
+          title,
+          status,
+          summary,
+          thumbnail,
+          themeColor,
+          currentPosition,
+          personalInfo,
+          education,
+          experience,
+          skills
+        } = c.req.valid('json');
+        const userId = user.id;
+
+        if(!documentId){
+          return c.json({ error:"DocumentId is required" }, 400)
+        }
+        await db.transaction(async (trx) => {
+          const resumeUpdate = {} as UpdateDocumentSchema;
+          if (title) resumeUpdate.title = title;
+          if (thumbnail) resumeUpdate.thumbnail = thumbnail;
+          if (summary) resumeUpdate.summary = summary;
+          if (themeColor) resumeUpdate.themeColor =  themeColor;
+          if (currentPosition) resumeUpdate.currentPosition = currentPosition || 1;
+          if (status) resumeUpdate.status = status;
+
+          const [ documentData ] = await trx
+            .update(documentTable)
+            .set(resumeUpdate)
+            .where(
+              and(
+                eq(documentTable.documentId, documentId),
+                eq(documentTable.userId, userId),
+              )
+            )
+            .returning();
+
+          // if(!documentData) {
+          //   return c.json({ error: 'Failed to update document!' }, 400)
+          // }
+
+          if(personalInfo){
+            if(!personalInfo?.firstName && !personalInfo?.lastName){
+              return;
+            }
+            const exists = await trx
+              .select()
+              .from(personalInfoTable)
+              .where(
+                eq(personalInfoTable.docId, documentData.id)
+              )
+          }
+        })
+      } catch (error) {
+        
       }
     }
   )
