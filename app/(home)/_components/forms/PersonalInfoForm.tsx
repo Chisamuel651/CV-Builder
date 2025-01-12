@@ -1,13 +1,17 @@
 import PersonalInfoSkeletonLoader from '@/components/skeleton-loader/personal-info-loader';
+import { Loader } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useResumeContext } from '@/context/resume-info-provider';
+import useUpdateDocument from '@/features/document/user-update-document';
+import { toast } from '@/hooks/use-toast';
 import { generateThumbnail } from '@/lib/helper';
 import { PersonalInfoType } from '@/types/resume.type';
 import React, { useCallback, useEffect, useState } from 'react'
 
 const initialState = {
+    id: undefined,
     firstName: "",
     lastName: "",
     jobTitle: "",
@@ -19,6 +23,8 @@ const initialState = {
 const PersonalInfoForm = ( props: {handleNext:() => void} ) => {
     const {handleNext} = props;
     const { resumeInfo, onUpdate } = useResumeContext()
+    const { mutateAsync, isPending } = useUpdateDocument()
+
     const [ personalInfo, setPersonalInfo ] = useState<PersonalInfoType>(initialState)
     const isLoading = false;
 
@@ -55,7 +61,27 @@ const PersonalInfoForm = ( props: {handleNext:() => void} ) => {
 
         const thumbnail = await generateThumbnail();
         const currentNo = resumeInfo?.currentPosition ? resumeInfo?.currentPosition + 1 : 1;
-    }, [])
+        await mutateAsync({
+            currentPosition: currentNo,
+            thumbnail: thumbnail,
+            personalInfo: personalInfo,
+        }, {
+            onSuccess: () => {
+                toast({
+                    title: "Success",
+                description: "Personal Information Updated Successfully"
+                });
+                handleNext()
+            },
+            onError: () => {
+                toast({
+                    title: "Error",
+                    description: 'Failed to update personal info',
+                    variant: 'destructive'
+                })
+            }
+        })
+    }, [ resumeInfo, personalInfo ])
 
     if(isLoading){
         return <PersonalInfoSkeletonLoader />
@@ -101,7 +127,8 @@ const PersonalInfoForm = ( props: {handleNext:() => void} ) => {
                 </div>
             </div>
 
-            <Button className='mt-4' type="submit" disabled={resumeInfo?.status === 'archived' ? true : false}>
+            <Button className='mt-4' type="submit" disabled={ isPending || resumeInfo?.status === 'archived' ? true : false}>
+                { isPending && <Loader size='15px' className='aniamte-spin' /> }
                 save changes
             </Button>
         </form>
