@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight } from 'lucide-react';
 import React, { useState } from 'react'
 import PersonalInfoForm from './forms/PersonalInfoForm';
 import SummaryForm from './forms/SummaryForm';
+import ExperienceForm from './forms/ExperienceForm';
 
 const ResumeForm = () => {
   const { resumeInfo } = useResumeContext();
@@ -33,6 +34,10 @@ const ResumeForm = () => {
           {/* summary form */}
           {activeFormIndex === 2 && (
             <SummaryForm handleNext={handleNext} />
+          )}
+          {/* experience form */}
+          {activeFormIndex === 3 && (
+            <ExperienceForm handleNext={handleNext} />
           )}
         </div>
       </div>
