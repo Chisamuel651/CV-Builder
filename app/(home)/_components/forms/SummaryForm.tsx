@@ -3,11 +3,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useResumeContext } from '@/context/resume-info-provider';
+import useUpdateDocument from '@/features/document/user-update-document';
 import { toast } from '@/hooks/use-toast';
 import { AIChatSession } from '@/lib/google-ai-model';
+import { generateThumbnail } from '@/lib/helper';
 import { ResumeDataType } from '@/types/resume.type';
 import { index } from 'drizzle-orm/mysql-core';
-import { Sparkles } from 'lucide-react';
+import { Loader, Sparkles } from 'lucide-react';
 import { title } from 'process';
 import React, { useCallback, useState } from 'react';
 
@@ -29,6 +31,7 @@ const SummaryForm = (props: { handleNext: () => void }) => {
     const { handleNext } = props;
     const { resumeInfo, onUpdate } = useResumeContext();
     const [loading, setLoading] = useState(false);
+    const { mutateAsync, isPending } = useUpdateDocument()
 
     const [aiGeneratedSummary, setAiGeneratedSummary] = useState<GenerateSummaryType | null>(null);
 
@@ -42,7 +45,35 @@ const SummaryForm = (props: { handleNext: () => void }) => {
         onUpdate(updatedInfo);
     };
 
-    const handleSubmit = () => {}
+    const handleSubmit = useCallback(async (
+        e:{preventDefault: () => void}
+    ) => {
+        e.preventDefault();
+        if(!resumeInfo) return ;
+        const thumbnail = await generateThumbnail()
+        const currentNo = resumeInfo?.currentPosition ? resumeInfo?.currentPosition + 1: 1;
+
+        await mutateAsync({
+            currentPosition: currentNo,
+            thumbnail: thumbnail,
+            summary: resumeInfo?.summary,
+        }, {
+            onSuccess: () => {
+                toast({
+                    title: 'Success',
+                    description: 'Summary updated successfully'
+                });
+                handleNext()
+            },
+            onError() {
+                toast({
+                    title: 'Error',
+                    description: 'Failed to updatred summary',
+                    variant: 'destructive',
+                })
+            }
+        })
+     }, [resumeInfo])
 
     const GenerateSummaryFromAI = async () => {
         try {
@@ -106,7 +137,7 @@ const SummaryForm = (props: { handleNext: () => void }) => {
                             variant='outline'
                             className='gap-1'
                             type='button'
-                            disabled={loading}
+                            disabled={loading || isPending}
                             onClick={() => GenerateSummaryFromAI()}
                         >
                             <Sparkles size='15px' className='text-orange-500' />
@@ -141,8 +172,8 @@ const SummaryForm = (props: { handleNext: () => void }) => {
                         </div>
                     )}
 
-                    <Button className='mt-4' type="submit" disabled={ loading || resumeInfo?.status === 'archived' ? true : false}>
-                        {/* {isPending && <Loader size='15px' className='aniamte-spin' />} */}
+                    <Button className='mt-4' type="submit" disabled={ isPending || loading || resumeInfo?.status === 'archived' ? true : false}>
+                        {isPending && <Loader size='15px' className='aniamte-spin' />}
                         Save Changes
                     </Button>
                 </form>
