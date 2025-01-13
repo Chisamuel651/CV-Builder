@@ -38,7 +38,7 @@ const PersonalInfo: FC<PropsType> = ({
         <h5 className="font-normal text-[13px]">
             {resumeInfo?.personalInfo?.phone || "Phone Number"}
         </h5>
-        <h5 className="font-normal text-[13px]">
+        <h5 className="font-normal text-[13px] lowercase">
             {resumeInfo?.personalInfo?.email || 'User Email'}
         </h5>
       </div>

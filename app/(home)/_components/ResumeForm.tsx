@@ -4,6 +4,7 @@ import { useResumeContext } from '@/context/resume-info-provider'
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import React, { useState } from 'react'
 import PersonalInfoForm from './forms/PersonalInfoForm';
+import SummaryForm from './forms/SummaryForm';
 
 const ResumeForm = () => {
   const { resumeInfo } = useResumeContext();
@@ -28,6 +29,10 @@ const ResumeForm = () => {
           {/* personal info form */}
           {activeFormIndex === 1 && (
             <PersonalInfoForm handleNext={handleNext} />
+          )}
+          {/* summary form */}
+          {activeFormIndex === 2 && (
+            <SummaryForm handleNext={handleNext} />
           )}
         </div>
       </div>

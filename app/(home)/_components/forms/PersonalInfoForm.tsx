@@ -22,11 +22,11 @@ const initialState = {
 
 const PersonalInfoForm = ( props: {handleNext:() => void} ) => {
     const {handleNext} = props;
-    const { resumeInfo, onUpdate } = useResumeContext()
+    const { resumeInfo, isLoading, onUpdate } = useResumeContext()
     const { mutateAsync, isPending } = useUpdateDocument()
 
     const [ personalInfo, setPersonalInfo ] = useState<PersonalInfoType>(initialState)
-    const isLoading = false;
+    // const isLoading = false;
 
     useEffect(() => {
         if(!resumeInfo){

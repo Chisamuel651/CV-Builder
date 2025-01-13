@@ -9,9 +9,7 @@ import EducationPreview from './preview/EducationPreview';
 import SkillPreview from './preview/SkillPreview';
 
 const ResumePreview = () => {
-  const { resumeInfo } = useResumeContext();
-
-  const isLoading = false;
+  const { resumeInfo, isLoading } = useResumeContext();
 
   return (
     <div id='resume-preview-id' className={cn(
