@@ -6,6 +6,28 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.exp-preview ul {
+  list-style: disc !important;
+  padding-left: 15px;
+}
+
+.exp-preview ol {
+  align-items: flex-start;
+  list-style: decimal !important;
+  padding-left: 15px !important; 
+}
+
+.rsw-ce ul{
+  list-style: disc;
+  padding-left: 2em;
+}
+
+.rsw-ce ol {
+  list-style: decimal;
+  padding-left: 2em;
+}
+
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;
@@ -69,7 +91,6 @@ body {
     --chart-5: 340 75% 55%;
   }
 }
-
 @layer base {
   * {
     @apply border-border;
