@@ -157,39 +157,29 @@ const documentRoute = new Hono()
             const existingExperience = await trx
               .select()
               .from(experienceTable)
-              .where(
-                eq(experienceTable.docId, existingDocument.id)
-              )
+              .where(eq(experienceTable.docId, existingDocument.id));
 
             const existingExperienceMap = new Set(
               existingExperience.map((exp) => exp.id)
             );
 
             for (const exp of experience) {
-              // if(!exp.companyName && !exp.title){
-              //   continue;
-              // }
-
-              if (exp.id) {
-                if (existingExperienceMap.has(exp.id)) {
-                  const { id, ...updateData } = exp;
-                  await trx
-                    .update(experienceTable)
-                    .set(updateData)
-                    .where(
-                      and(
-                        eq(experienceTable.docId, existingDocument.id),
-                        eq(experienceTable.id, id)
-                      )
+              const { id, ...data } = exp;
+              if (id !== undefined && existingExperienceMap.has(id)) {
+                await trx
+                  .update(experienceTable)
+                  .set(data)
+                  .where(
+                    and(
+                      eq(experienceTable.docId, existingDocument.id),
+                      eq(experienceTable.id, id)
                     )
-                } else {
-                  const { id, ...insertData } = exp;
-                  await trx.insert(experienceTable)
-                    .values({
-                      docId: existingDocument.id,
-                      ...insertData,
-                    })
-                }
+                  );
+              } else {
+                await trx.insert(experienceTable).values({
+                  docId: existingDocument.id,
+                  ...data,
+                });
               }
             }
           }
@@ -198,70 +188,60 @@ const documentRoute = new Hono()
             const existingEducation = await trx
               .select()
               .from(educationTable)
-              .where(
-                eq(educationTable.docId, existingDocument.id)
-              )
+              .where(eq(educationTable.docId, existingDocument.id));
 
             const existingEducationMap = new Set(
               existingEducation.map((edu) => edu.id)
             );
 
             for (const edu of education) {
-              if (edu.id) {
-                if (existingEducationMap.has(edu.id)) {
-                  const { id, ...updateData } = edu;
-                  await trx.update(educationTable)
-                    .set(updateData)
-                    .where(
-                      and(
-                        eq(educationTable.docId, existingDocument.id),
-                        eq(educationTable.id, id),
-                      )
+              const { id, ...data } = edu;
+              if (id !== undefined && existingEducationMap.has(id)) {
+                await trx
+                  .update(educationTable)
+                  .set(data)
+                  .where(
+                    and(
+                      eq(educationTable.docId, existingDocument.id),
+                      eq(educationTable.id, id)
                     )
-                }else {
-                  const { id, ...updateData } = edu;
-                  await trx.insert(educationTable)
-                    .values({
-                      docId: existingDocument.id,
-                      ...updateData,
-                    })
-                }
+                  );
+              } else {
+                await trx.insert(educationTable).values({
+                  docId: existingDocument.id,
+                  ...data,
+                });
               }
             }
           }
 
-          if(skills && Array.isArray(skills)){
-            const existingSkills = await trx
+          if (skills && Array.isArray(skills)) {
+            const existingskills = await trx
               .select()
               .from(skillsTable)
-              .where(
-                eq(skillsTable.docId, existingDocument.id)
-              )
+              .where(eq(skillsTable.docId, existingDocument.id));
 
             const existingSkillsMap = new Set(
-              existingSkills.map((skill) => skill.id)
+              existingskills.map((skill) => skill.id)
             );
 
             for (const skill of skills) {
-              if (skill.id) {
-                if (existingSkillsMap.has(skill.id)) {
-                  const { id, ...updateData } = skill;
-                  await trx.update(skillsTable)
-                    .set(updateData)
-                    .where(
-                      and(
-                        eq(skillsTable.docId, existingDocument.id),
-                        eq(skillsTable.id, id),
-                      )
+              const { id, ...data } = skill;
+              if (id !== undefined && existingSkillsMap.has(id)) {
+                await trx
+                  .update(skillsTable)
+                  .set(data)
+                  .where(
+                    and(
+                      eq(skillsTable.docId, existingDocument.id),
+                      eq(skillsTable.id, id)
                     )
-                }else {
-                  const { id, ...updateData } = skill;
-                  await trx.insert(skillsTable)
-                    .values({
-                      docId: existingDocument.id,
-                      ...updateData,
-                    })
-                }
+                  );
+              } else {
+                await trx.insert(skillsTable).values({
+                  docId: existingDocument.id,
+                  ...data,
+                });
               }
             }
           }
