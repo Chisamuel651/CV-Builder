@@ -48,7 +48,7 @@ const ResumeForm = () => {
           )}
 
           {/* skills form */}
-          {activeFormIndex === 5 && <SkillsForm />}
+          {activeFormIndex === 5 && (<SkillsForm />)}
         </div>
       </div>
     </div>

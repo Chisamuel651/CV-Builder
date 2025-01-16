@@ -20,15 +20,23 @@ const SkillsForm = () => {
     const { resumeInfo, onUpdate } = useResumeContext();
     const { mutateAsync, isPending } = useUpdateDocument();
 
-    const [skillsList, setSkillsList] = React.useState(() => resumeInfo?.skills || []);
+    const [skillsList, setSkillsList] = React.useState([
+        ...(resumeInfo?.skills || []),
+        initialState,
+      ]);
+    
 
     useEffect(() => {
-        if (!resumeInfo || JSON.stringify(resumeInfo.skills) === JSON.stringify(skillsList)) return;
+        if (!resumeInfo) return;
+    
+        const isSameSkills = JSON.stringify(resumeInfo.skills || []) === JSON.stringify(skillsList);
+        if (isSameSkills) return;
+    
         onUpdate({
             ...resumeInfo,
             skills: skillsList,
         });
-    }, [skillsList]);
+    }, [skillsList, resumeInfo, onUpdate]);
 
     const handleChange = (
         value: string | number,
