@@ -1,12 +1,44 @@
 'use client'
+import useUpdateDocument from '@/features/document/user-update-document';
 import { useResumeContext } from '@/context/resume-info-provider'
 import { AlertCircle } from 'lucide-react';
-import React from 'react'
+import React, { useCallback } from 'react'
 import ResumeTitle from './ResumeTitle';
+import { toast } from '@/hooks/use-toast';
 
 const TopSection = () => {
-    const { resumeInfo } = useResumeContext();
+    const { resumeInfo,  onUpdate, isLoading } = useResumeContext();
+    const {mutateAsync, isPending} = useUpdateDocument();
 
+    const handleTitle = useCallback((title: string) => {
+        if(title === 'Untitiled Resume' && !title) return;
+
+        if(resumeInfo){
+            onUpdate({
+                ...resumeInfo,
+                title: title,
+            })
+        }
+
+        mutateAsync(
+            { title: title },
+            {
+                onSuccess: () => {
+                    toast({
+                        title: 'Success',
+                        description: "Title updated successfully"
+                    })
+                },
+                onError: () => {
+                    toast({
+                        title: 'Error',
+                        description: 'Failed to update the title',
+                        variant: 'destructive'
+                    })
+                }
+            }
+        )
+    }, [resumeInfo, onUpdate])
   return (
     <>
         {resumeInfo?.status === "archived" && (
@@ -18,10 +50,10 @@ const TopSection = () => {
         <div className='w-full flex items-center justify-between border-b pb-3'>
             <div className="flex items-center gap-2">
                 <ResumeTitle
-                    isLoading={false}
+                    isLoading={isLoading || isPending}
                     initialTitle={resumeInfo?.title || ""}
                     status={resumeInfo?.status}
-                    onSave={(value) => console.log(value)}
+                    onSave={(value) => handleTitle(value)}
                 />
             </div>
 

@@ -1,3 +1,4 @@
+'use client'
 import { cn } from '@/lib/utils'
 import { FileText, Globe, Lock, Trash2 } from 'lucide-react'
 import React, { FC, useEffect, useState } from 'react'
@@ -39,9 +40,11 @@ const ResumeTitle: FC<ResumeTitleProps> = ({
     <div className='flex items-center gap-1 pr-4'>
       <FileText className='stroke-primary' size="20px" />
       <h5 className={cn(
-        `text-[20px] px- text-gray-700 dark:text-gray-300 font-semibold opacity-100`
+        `text-[20px] px- text-gray-700 dark:text-gray-300 font-semibold opacity-100`, {
+          "!opacity-70 !pointer-events-none": isLoading === true || status === 'archived',
+        }
       )}
-      contentEditable={true}
+      contentEditable={isLoading || status === 'archived' ? false: true}
       suppressContentEditableWarning={true}
       onBlur={handleBlur}
       onKeyDown={handleKeyDown}
