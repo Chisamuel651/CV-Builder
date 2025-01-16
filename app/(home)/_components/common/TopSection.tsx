@@ -5,6 +5,7 @@ import { AlertCircle } from 'lucide-react';
 import React, { useCallback } from 'react'
 import ResumeTitle from './ResumeTitle';
 import { toast } from '@/hooks/use-toast';
+import ThemeColor from './ThemeColor';
 
 const TopSection = () => {
     const { resumeInfo,  onUpdate, isLoading } = useResumeContext();
@@ -29,7 +30,7 @@ const TopSection = () => {
                         description: "Title updated successfully"
                     })
                 },
-                onError: () => {
+                onError() {
                     toast({
                         title: 'Error',
                         description: 'Failed to update the title',
@@ -59,7 +60,7 @@ const TopSection = () => {
 
             <div className="flex items-center gap-2">
                 {/* Theme Color */}
-
+                <ThemeColor />
                 {/* preview mode */}
 
                 {/* download resume */}
