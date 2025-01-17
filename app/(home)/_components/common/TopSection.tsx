@@ -7,6 +7,7 @@ import ResumeTitle from './ResumeTitle';
 import { toast } from '@/hooks/use-toast';
 import ThemeColor from './ThemeColor';
 import PreviewMode from '../PreviewMode';
+import Download from './Download';
 
 const TopSection = () => {
     const { resumeInfo,  onUpdate, isLoading } = useResumeContext();
@@ -65,7 +66,7 @@ const TopSection = () => {
                 {/* preview mode */}
                 <PreviewMode />
                 {/* download resume */}
-
+                <Download title={resumeInfo?.title || "Untitled Resume"} status={resumeInfo?.status} isLoading={isLoading} />
                 {/* share resume */}
 
                 {/* more option */}

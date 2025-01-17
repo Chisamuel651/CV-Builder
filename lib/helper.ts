@@ -23,3 +23,8 @@ export const generateThumbnail = async () => {
         console.error('Thumbnail generation failed', error);
     }
 }
+
+export const formatFileName = (title: string, useHyphen: boolean = true) => {
+    const delimeter = useHyphen ? "-" : "_"
+    return title.trim().replace(/\s+/g, delimeter) + "pdf";
+}
