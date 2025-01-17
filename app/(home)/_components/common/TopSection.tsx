@@ -6,6 +6,7 @@ import React, { useCallback } from 'react'
 import ResumeTitle from './ResumeTitle';
 import { toast } from '@/hooks/use-toast';
 import ThemeColor from './ThemeColor';
+import PreviewMode from '../PreviewMode';
 
 const TopSection = () => {
     const { resumeInfo,  onUpdate, isLoading } = useResumeContext();
@@ -62,7 +63,7 @@ const TopSection = () => {
                 {/* Theme Color */}
                 <ThemeColor />
                 {/* preview mode */}
-
+                <PreviewMode />
                 {/* download resume */}
 
                 {/* share resume */}
