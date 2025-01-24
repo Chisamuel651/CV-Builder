@@ -85,10 +85,10 @@ const ThemeColor = () => {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button disabled={resumeInfo?.status === 'archived'? true: false} className='bg-white border gap-1 dark:bg-gray-800 !p-2 lg:w-auto lg:p-4' variant='secondary'>
+        <Button disabled={resumeInfo?.status === 'archived'? true: false} className='bg-white border gap-1 dark:bg-gray-800 !p-2 w-9 lg:w-auto lg:p-4' variant='secondary'>
           <div className='flex items-center gap-1'>
             <Palette size='17px' />
-            <span className='flex'>Theme</span>
+            <span className='hidden lg:flex'>Theme</span>
           </div>
 
           <ChevronDown size='14px' />

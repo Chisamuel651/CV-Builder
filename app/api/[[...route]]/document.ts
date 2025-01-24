@@ -328,6 +328,51 @@ const documentRoute = new Hono()
       }
     }
   )
+  .get("public/doc/:documentId",
+    zValidator(
+      "param",
+      z.object({
+        documentId: z.string(),
+      })
+    ),
+    async (c) => {
+      try {
+        const { documentId } = c.req.valid("param");
+        const documentData = await db.query.documentTable.findFirst({
+          where: and(
+            eq(documentTable.status, "public"),
+            eq(documentTable.documentId, documentId)
+          ),
+          with: {
+            personalInfo: true,
+            experiences: true,
+            educations: true,
+            skills: true,
+          }
+        });
+
+        if(!documentData){
+          return c.json({
+            error: true,
+            message: 'unauthorized',
+          }, 401)
+        }
+
+        return c.json({
+          success: true,
+          data: documentData,
+        })
+      } catch (error) {
+        return c.json(
+          {
+            success: false,
+            message: 'Failed to fetch data',
+            error: false,
+          }, 500
+        )
+      }
+    }
+  )
   
 
 export default documentRoute

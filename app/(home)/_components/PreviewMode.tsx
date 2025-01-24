@@ -11,10 +11,10 @@ const PreviewMode = () => {
         <>
             <Dialog>
                 <DialogTrigger asChild>
-                    <Button disabled={isLoading || resumeInfo?.status === 'archived' ? true : false} className='bg-white border gap-1 dark:bg-gray-800 !p-2 lg:w-auto lg:p-4' variant='secondary'>
+                    <Button disabled={isLoading || resumeInfo?.status === 'archived' ? true : false} size='icon' className='w-9 lg:w-auto bg-white border gap-1 dark:bg-gray-800 !p-2 lg:p-4' variant='secondary'>
                         <div className='flex items-center gap-1'>
                             <Eye size='17px' />
-                            <span className='flex'>Preview</span>
+                            <span className='hidden lg:flex'>Preview</span>
                         </div>
                     </Button>
                 </DialogTrigger>

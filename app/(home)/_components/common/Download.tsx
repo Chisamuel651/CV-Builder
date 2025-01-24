@@ -60,10 +60,10 @@ const Download = (props: {
         }
     }, [title])
     return (
-        <Button onClick={handleDownload} disabled={ isLoading || loading || status === 'archived' ? true : false} className='bg-white border gap-1 dark:bg-gray-800 !p-2 lg:w-auto lg:p-4' variant='secondary'>
+        <Button onClick={handleDownload} disabled={ isLoading || loading || status === 'archived' ? true : false} className='w-9 bg-white border gap-1 dark:bg-gray-800 !p-2 lg:w-auto lg:p-4' variant='secondary'>
             <div className='flex items-center gap-1'>
                 <DownloadCloud size='17px' />
-                <span className='flex'>{loading ? "Generating PDF" : "Download Resume"}</span>
+                <span className='hidden lg:flex'>{loading ? "Generating PDF" : "Download Resume"}</span>
             </div>
         </Button>
     )
