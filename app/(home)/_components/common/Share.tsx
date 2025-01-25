@@ -95,6 +95,7 @@ const Share = () => {
                                     isPending &&
                                     <Loader size='15px' className='animate-spin' />
                                 }
+                                Private
                             </Button>
                         </div>
                     ) : (

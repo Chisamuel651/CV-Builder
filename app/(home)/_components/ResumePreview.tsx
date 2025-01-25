@@ -2,11 +2,11 @@
 import { useResumeContext } from '@/context/resume-info-provider';
 import { cn } from '@/lib/utils'
 import React from 'react'
-import PersonalInfo from './preview/PersonalInfo';
-import SummaryPreview from './preview/SummaryPreview';
-import ExperiencePreview from './preview/ExperiencePreview';
-import EducationPreview from './preview/EducationPreview';
-import SkillPreview from './preview/SkillPreview';
+import PersonalInfo from '../../../components/preview/PersonalInfo';
+import SummaryPreview from '../../../components/preview/SummaryPreview';
+import ExperiencePreview from '../../../components/preview/ExperiencePreview';
+import EducationPreview from '../../../components/preview/EducationPreview';
+import SkillPreview from '../../../components/preview/SkillPreview';
 
 const ResumePreview = () => {
   const { resumeInfo, isLoading } = useResumeContext();
