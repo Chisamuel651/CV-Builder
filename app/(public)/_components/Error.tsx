@@ -20,6 +20,7 @@ const Error = () => {
           {" "}
           Cv.Builder
         </h5>
+        <p className="text-xs">Powered By <span className='text-primary font-semibold'>Solumentics</span> </p>
       </div>
     </div>
   )

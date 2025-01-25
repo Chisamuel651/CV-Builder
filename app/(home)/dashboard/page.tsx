@@ -1,6 +1,7 @@
 import React from 'react'
 import AddResume from '../_components/AddResume'
 import ResumeList from '../_components/ResumeList'
+import TrashList from '../_components/TrashList'
 
 const Page = () => {
   return (
@@ -18,6 +19,7 @@ const Page = () => {
 
           <div className="shrink-0 flex items-center gap-3">
             {/* trash list */}
+            <TrashList />
           </div>
         </div>
 

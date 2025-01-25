@@ -11,7 +11,7 @@ import useDebounce from '@/hooks/use-debounce';
 
 const ThemeColor = () => {
   const colors = [
-    '#d5bdaf',
+    '#f48c06',
     '#ffafcc',
     '#00b4d8',
     '#495057',
@@ -30,7 +30,7 @@ const ThemeColor = () => {
     '#9381ff',
     '#ff5d8f',
     '#1c1c1c',
-    '#1b2cc1'
+    '#1b2cc1',
   ];
 
   const { resumeInfo,  onUpdate, isLoading } = useResumeContext();

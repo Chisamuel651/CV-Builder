@@ -9,6 +9,7 @@ import ThemeColor from './ThemeColor';
 import PreviewMode from '../PreviewMode';
 import Download from './Download';
 import Share from './Share';
+import MoreOption from './MoreOption';
 
 const TopSection = () => {
     const { resumeInfo,  onUpdate, isLoading } = useResumeContext();
@@ -71,6 +72,7 @@ const TopSection = () => {
                 {/* share resume */}
                 <Share />
                 {/* more option */}
+                <MoreOption />
             </div>
         </div>
     </>

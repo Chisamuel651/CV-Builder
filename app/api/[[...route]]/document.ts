@@ -1,9 +1,9 @@
 // authors.ts
-import { createDocumentTableSchema, DocumentSchema, documentTable, updateCombinedSchema, UpdateDocumentSchema } from '@/db/schema/document'
+import { createDocumentTableSchema, documentRelations, DocumentSchema, documentTable, updateCombinedSchema, UpdateDocumentSchema } from '@/db/schema/document'
 import { Hono } from 'hono'
 import { zValidator } from '@hono/zod-validator'
 import { desc, and, eq, ne } from 'drizzle-orm';
-import { object, z } from 'zod'
+import { z } from 'zod'
 import { getAuthUser } from '@/lib/kinde'
 import { generateDocUUID } from '@/lib/helper'
 import { db } from '@/db'
@@ -268,6 +268,65 @@ const documentRoute = new Hono()
       }
     }
   )
+  .patch(
+    "/restore/archive",
+    zValidator(
+      'json',
+      z.object({
+        documentId: z.string(),
+        status: z.string(),
+      })
+    ),
+    getAuthUser,
+    async (c) => {
+      try {
+        const user = c.get('user')
+        const userId = user.id;
+
+        const { documentId, status } = c.req.valid('json')
+        if(!documentId){
+          return c.json({ message: 'DocumentId must be provided' }, 400)
+        }
+
+        if(status !== 'archived'){
+          return c.json({
+            message: 'Status must be archived before restored'
+          }, 400);
+        }
+
+        const [documentData] = await db
+          .update(documentTable)
+          .set({
+            status: 'private'
+          })
+          .where(
+            and(
+              eq(documentTable.userId, userId),
+              eq(documentTable.documentId, documentId),
+              eq(documentTable.status, 'archived')
+            )
+          ).returning();
+
+          if(!documentData){
+            return c.json({
+              message: 'Document not found'
+            }, 404)
+          }
+
+          return c.json({
+            success: 'ok',
+            message: 'Updated successfully',
+            data: documentData,
+          }, {status: 200});
+      } catch (error) {
+        return c.json({
+          success: false,
+          message: 'Failed to restore document',
+          error: error,
+        }, 500)
+      }
+    }
+  )
   .get("all", getAuthUser, async (c) => {
     try {
       const user = c.get("user");
@@ -373,6 +432,32 @@ const documentRoute = new Hono()
       }
     }
   )
+  .get('/trash/all', getAuthUser, async (c) => {
+    try {
+      const user = c.get('user');
+      const userId = user.id;
+      const douments = await db
+        .select()
+        .from(documentTable)
+        .where(
+          and(
+            eq(documentTable.userId, userId),
+            eq(documentTable.status, "archived"),
+          )
+        );
+
+        return c.json({
+          success: true,
+          data: documentRelations,
+        });
+    } catch (error) {
+      return c.json({
+        success: 'false',
+        message: 'Failed to fetch documents',
+        error: error,
+      }, 500);
+    }
+  })
   
 
 export default documentRoute
