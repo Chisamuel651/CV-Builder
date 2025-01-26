@@ -6,13 +6,17 @@ import { ThemeProvider } from "@/context/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 import QueryProvider from "@/context/query-provider";
 
-const urbanist = Urbanist({ subsets: ['latin'] });
-
-const open_sans = Open_Sans({
+const urbanist = Urbanist({ 
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-open_sans',
-})
+  variable: '--font-urbanist'
+});
+
+// const open_sans = Open_Sans({
+//   subsets: ['latin'],
+//   display: 'swap',
+//   variable: '--font-open_sans',
+// })
 
 export const metadata: Metadata = {
   title: "CV Builder",
@@ -27,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={cn("bg-background !capitalize", open_sans.variable, urbanist.className)}
+        className={cn("bg-background !capitalize", urbanist.variable)}
       >
         <QueryProvider>
           <ThemeProvider
