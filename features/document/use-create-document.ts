@@ -16,7 +16,7 @@ const useCreateDocument = () => {
           return await response.json();
         },
         onSuccess: (response) => {
-          console.log(response);
+          // console.log(response);
           queryClient.invalidateQueries({ queryKey: ["documents"] });
         },
         onError: () => {

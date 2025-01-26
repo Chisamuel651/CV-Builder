@@ -84,7 +84,7 @@ const SummaryForm = (props: { handleNext: () => void }) => {
             const PROMPT = prompt.replace("{jobTitle}", jobTitle);
             const result = await AIChatSession.sendMessage(PROMPT);
             const responseText = await result.response.text();
-            console.log(responseText)
+            // console.log(responseText)
             // setAiGeneratedSummary(JSON?.parse(responseText));
             const parsedResponse = JSON.parse(responseText);
 

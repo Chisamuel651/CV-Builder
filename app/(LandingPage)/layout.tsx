@@ -14,7 +14,7 @@ const LandingLayout = async ({
     redirect('/dashboard')
   }
 
-  console.log(isUserAuthenticated, 'isUserAuthenticated');
+  // console.log(isUserAuthenticated, 'isUserAuthenticated');
 
   return (
     <div>

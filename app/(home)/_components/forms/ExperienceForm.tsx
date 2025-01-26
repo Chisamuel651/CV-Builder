@@ -128,6 +128,7 @@ const ExperienceForm = (props: { handleNext: () => void }) => {
                                     <Label className='text-sm'>position title</Label>
                                     <Input name='title' placeholder='' required value={item?.title || ''} onChange={(e) => handleChange(e, index)} />
                                 </div>
+                                
 
                                 <div>
                                     <Label className='text-sm'>company name</Label>

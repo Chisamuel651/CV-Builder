@@ -49,7 +49,7 @@ const Download = (props: {
             }
             pdf.save(fileName);
         } catch (error) {
-            console.error('Error generating PDF', error);
+            // console.error('Error generating PDF', error);
             toast({
                 title: "Error",
                 description: "Error generating PDF:",
