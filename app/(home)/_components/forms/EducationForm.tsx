@@ -46,6 +46,25 @@ const EducationForm = (props: { handleNext: () => void }) => {
                 ...newEducationList[index],
                 [name]: value,
             };
+
+            // validate start and end dates
+            if (name === 'startDate' && newEducationList[index].endDate && new Date(value) > new Date(newEducationList[index].endDate)) {
+                newEducationList[index].startDate = '';
+                toast({
+                    title: 'Invalid dates',
+                    description: 'Sorry but the start date can never be after the end date',
+                    variant: 'destructive'
+                });
+            }
+
+            if (name === 'endDate' && newEducationList[index].startDate && new Date(value) < new Date(newEducationList[index].startDate)) {
+                newEducationList[index].endDate = '';
+                toast({
+                    title: 'Invalid dates',
+                    description: 'Sorry but the end date can never be before the start date',
+                    variant: 'destructive'
+                });
+            }
             return newEducationList;
         })
     }
@@ -62,6 +81,17 @@ const EducationForm = (props: { handleNext: () => void }) => {
 
     const handleSubmit = useCallback(async (e: { preventDefault: () => void }) => {
         e.preventDefault();
+
+        for (const education of educationList) {
+            if (education.startDate && education.endDate && new Date(education.startDate) > new Date(education.endDate)) {
+                toast({
+                    title: 'Invalid dates',
+                    description: 'Please ensure all start dates are before end dates.',
+                    variant: 'destructive',
+                });
+                return;
+            }
+        }
         const thumbnail = await generateThumbnail();
         const currentNo = resumeInfo?.currentPosition ? resumeInfo.currentPosition + 1 : 1;
 
@@ -99,7 +129,7 @@ const EducationForm = (props: { handleNext: () => void }) => {
                     {educationList?.map((item, index) => (
                         <div className='' key={index}>
                             <div className='relative grid grid-cols-2 mb-5 pt-4 gap-3'>
-                            {educationList?.length > 1 && (
+                                {educationList?.length > 1 && (
                                     <Button
                                         variant='secondary'
                                         type='button'
@@ -139,7 +169,7 @@ const EducationForm = (props: { handleNext: () => void }) => {
 
                                 <div className='col-span-2 mt-1'>
                                     <Label className='text-sm'>description</Label>
-                                    <Textarea 
+                                    <Textarea
                                         name='description'
                                         placeholder=''
                                         required

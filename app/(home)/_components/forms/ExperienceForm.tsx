@@ -46,6 +46,25 @@ const ExperienceForm = (props: { handleNext: () => void }) => {
                 ...newExperienceList[index],
                 [name]: value,
             };
+
+            // validate start and end dates
+            if (name === 'startDate' && newExperienceList[index].endDate && new Date(value) > new Date(newExperienceList[index].endDate)) {
+                newExperienceList[index].startDate = '';
+                toast({
+                    title: 'Invalid dates',
+                    description: 'Sorry but the start date can never be after the end date',
+                    variant: 'destructive'
+                });
+            }
+    
+            if (name === 'endDate' && newExperienceList[index].startDate && new Date(value) < new Date(newExperienceList[index].startDate)) {
+                newExperienceList[index].endDate = '';
+                toast({
+                    title: 'Invalid dates',
+                    description: 'Sorry but the end date can never be before the start date',
+                    variant: 'destructive'
+                });
+            }
             return newExperienceList;
         })
     }
@@ -73,6 +92,18 @@ const ExperienceForm = (props: { handleNext: () => void }) => {
 
     const handleSubmit = useCallback(async (e: { preventDefault: () => void }) => {
         e.preventDefault();
+
+        // Validate all experiences before submission
+        for (const experience of experienceList) {
+            if (experience.startDate && experience.endDate && new Date(experience.startDate) > new Date(experience.endDate)) {
+                toast({
+                    title: 'Invalid dates',
+                    description: 'Please ensure all start dates are before end dates.',
+                    variant: 'destructive',
+                });
+                return;
+            }
+        }
         const thumbnail = await generateThumbnail();
         const currentNo = resumeInfo?.currentPosition ? resumeInfo.currentPosition + 1 : 1;
 
@@ -128,7 +159,7 @@ const ExperienceForm = (props: { handleNext: () => void }) => {
                                     <Label className='text-sm'>position title</Label>
                                     <Input name='title' placeholder='' required value={item?.title || ''} onChange={(e) => handleChange(e, index)} />
                                 </div>
-                                
+
 
                                 <div>
                                     <Label className='text-sm'>company name</Label>

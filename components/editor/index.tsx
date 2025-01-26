@@ -53,10 +53,10 @@ const RichTextEditor = (props: {
             const prompt = PROMPT.replace("{jobTitle}", jobTitle || "Job Title");
             const result = await AIChatSession.sendMessage(prompt);
             const responseText = await result.response.text();
-            // console.log(responseText);
             try {
                 const validJsonArray = JSON.parse(responseText);
                 const combinedHTML = validJsonArray.join("").trim();
+                console.log(combinedHTML);
     
                 setValue(combinedHTML);
                 onEditorChange(combinedHTML);

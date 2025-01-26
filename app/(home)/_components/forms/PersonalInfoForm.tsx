@@ -123,7 +123,7 @@ const PersonalInfoForm = ( props: {handleNext:() => void} ) => {
 
                 <div className='col-span-2'>
                     <Label className='text-sm'>email address</Label>
-                    <Input name='email' required autoComplete='off' placeholder='' value={personalInfo?.email || ''} onChange={handleChange} />
+                    <Input name='email' type='email' required autoComplete='off' placeholder='' value={personalInfo?.email || ''} onChange={handleChange} />
                 </div>
             </div>
 
