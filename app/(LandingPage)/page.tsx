@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <div className='min-h-screen flex flex-col bg-gradient-to-b from-orange-50 via-white to-orange-20'>
       <div className='shadow-sm w-full sticky top-0 bg-white dark:bg-gray-900 z-[9]'>
-        <div className='w-full mx-auto max-w-7xl py-2 px-5 flex items-center justify-between'>
+        <div className='w-full mx-auto max-w-7xl py-2 px-5 !bg-white flex items-center justify-between'>
           <div className='flex items-center gap-3'>
             <div>
               <span className='font-black text-xl sm:text-2xl text-primary'>CV.Builder</span>
