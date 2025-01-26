@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Urbanist, Open_Sans } from "next/font/google";
+import { Urbanist } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "@/context/theme-provider";
@@ -31,13 +31,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={cn("bg-background !capitalize", urbanist.variable)}
+        className={cn("bg-background !capitalize", urbanist.variable, urbanist.className)}
       >
         <QueryProvider>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
-            enableSystem
+            enableSystem={false}
             disableTransitionOnChange
           >
             {children}
